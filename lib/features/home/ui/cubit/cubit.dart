@@ -1,6 +1,6 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:techbot/features/home/models/create_subject_model.dart';
+// import 'package:techbot/features/home/models/create_subject_model.dart';
 import 'package:techbot/features/home/models/subject_model.dart';
 import 'package:techbot/features/home/repository/repository.dart';
 
@@ -45,7 +45,6 @@ class HomeCubit extends Cubit<HomeState> {
       final subjects = await repository.getSubject(token);
       emit(HomeSuccess(state.model.copyWith(subjects: subjects)));
     } catch (e) {
-      print('error en get $e');
       emit(HomeError(state.model));
     }
   }
