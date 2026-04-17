@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:techbot/core/router/router.dart';
 import 'package:techbot/core/theme/colors.dart';
 import 'package:techbot/core/widgets/buttons/buttons.dart';
 import 'package:techbot/core/widgets/inputs.dart';
@@ -36,6 +37,10 @@ class _Body extends StatelessWidget {
             iconColor: Color(0xFF22C55E),
             title: '¡Bienvenido!',
             subtitle: 'Has iniciado sesión correctamente.',
+          );
+          context.pushReplacementNamed(
+            Routes.home,
+            extra: state.authModel.accessToken,
           );
         }
         if (state is LoginError) {
