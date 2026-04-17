@@ -18,7 +18,11 @@ final class LoginLoading extends LoginState {
 }
 
 final class LoginSuccess extends LoginState {
-  const LoginSuccess(super.model);
+  final AuthModel authModel;
+  const LoginSuccess(super.model, this.authModel);
+
+  @override
+  List<Object> get props => [model, authModel];
 }
 
 final class LoginError extends LoginState {

@@ -22,7 +22,12 @@ final class ChangeVisibility extends RegisterState {
 }
 
 final class RegisterSuccess extends RegisterState {
-  const RegisterSuccess(super.model);
+  const RegisterSuccess(super.model, this.authModel);
+
+  final AuthModel authModel;
+
+  @override
+  List<Object> get props => [model, authModel];
 }
 
 final class RegisterError extends RegisterState {

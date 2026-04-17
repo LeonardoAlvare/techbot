@@ -1,5 +1,6 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:techbot/features/auth/models/auth_model.dart';
 import 'package:techbot/features/auth/repository/repository.dart';
 
 part 'state.dart';
@@ -29,11 +30,11 @@ class LoginCubit extends Cubit<LoginState> {
     emit(LoginLoading(state.model));
 
     try {
-      await repository.login(
+      final authModel = await repository.login(
         email: state.model.email,
         password: state.model.password,
       );
-      emit(LoginSuccess(state.model));
+      emit(LoginSuccess(state.model, authModel));
     } catch (e) {
       emit(LoginError(state.model));
     }

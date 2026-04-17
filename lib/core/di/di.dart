@@ -6,6 +6,9 @@ import 'package:techbot/features/auth/repository/repository.dart';
 import 'package:techbot/features/auth/repository/repository_imp.dart';
 import 'package:techbot/features/auth/ui/login/cubit/cubit.dart';
 import 'package:techbot/features/auth/ui/register/cubit/cubit.dart';
+import 'package:techbot/features/home/repository/repository.dart';
+import 'package:techbot/features/home/repository/repository_imp.dart';
+import 'package:techbot/features/home/ui/cubit/cubit.dart';
 
 final getIt = GetIt.instance;
 Future<void> setupDi() async {
@@ -39,6 +42,12 @@ Future<void> setupDi() async {
     );
   }
 
+  if (!getIt.isRegistered<HomeRepository>()) {
+    getIt.registerLazySingleton<HomeRepository>(
+      () => HomeRepositoryImp(getIt<Dio>()),
+    );
+  }
+
   //? Cubit
   if (!getIt.isRegistered<LoginCubit>()) {
     getIt.registerFactory<LoginCubit>(
@@ -50,5 +59,9 @@ Future<void> setupDi() async {
     getIt.registerFactory<RegisterCubit>(
       () => RegisterCubit(getIt<AuthRepository>()),
     );
+  }
+
+  if (!getIt.isRegistered<HomeCubit>()) {
+    getIt.registerFactory<HomeCubit>(() => HomeCubit(getIt<HomeRepository>()));
   }
 }

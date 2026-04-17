@@ -1,5 +1,6 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:techbot/features/auth/models/auth_model.dart';
 import 'package:techbot/features/auth/repository/repository.dart';
 
 part 'state.dart';
@@ -46,12 +47,13 @@ class RegisterCubit extends Cubit<RegisterState> {
   Future<void> register() async {
     emit(RegisterLoading(state.model));
     try {
-      await repository.register(
+      final authModel = await repository.register(
         name: state.model.name,
         lastName: state.model.lastName,
         email: state.model.email,
         password: state.model.password,
       );
+      emit(RegisterSuccess(state.model, authModel));
     } catch (e) {
       emit(RegisterError(state.model));
     }
