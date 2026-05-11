@@ -4,26 +4,39 @@ import 'package:go_router/go_router.dart';
 import 'package:techbot/core/router/router.dart';
 import 'package:techbot/core/theme/colors.dart';
 import 'package:techbot/features/home/ui/cubit/cubit.dart';
+import 'package:techbot/features/home/widgets/create_subject_dialog.dart';
 
 part 'sections/header.dart';
 
 class HomePage extends StatelessWidget {
   final HomeCubit cubit;
-  final String token;
 
-  const HomePage({super.key, required this.cubit, required this.token});
+  const HomePage({super.key, required this.cubit});
 
   @override
   Widget build(BuildContext context) {
     return BlocProvider.value(
-      value: cubit..getSubject(token),
+      value: cubit..getSubject(),
       child: Scaffold(
         appBar: _Header(
           onLogout: () => context.pushReplacementNamed(Routes.login),
         ),
         body: _Body(),
         floatingActionButton: FloatingActionButton.extended(
-          onPressed: () {},
+          onPressed: () {
+            showDialog(
+              barrierDismissible: false,
+              context: context,
+              builder: (context) => CreateSubjectDialog(
+                onChangeName: (value) => cubit.setName(value),
+                onChangeDescription: (value) => cubit.setDescription(value),
+                addSubject: () {
+                  cubit.createSubject();
+                  Navigator.pop(context);
+                },
+              ),
+            );
+          },
           backgroundColor: CustomColors.primary,
           icon: const Icon(Icons.add, color: Colors.white),
           label: const Text(
@@ -82,9 +95,9 @@ class _Body extends StatelessWidget {
                   itemCount: subjects.length,
                   separatorBuilder: (_, __) => const SizedBox(height: 12),
                   itemBuilder: (_, index) => _SubjectCard(
-                    name: subjects[index].name ?? '',
-                    documentCount:
-                        subjects[index].count?.documents?.toInt() ?? 0,
+                    name: subjects[index].name,
+                    description: subjects[index].description,
+                    id: subjects[index].id,
                   ),
                 );
               },
@@ -98,58 +111,72 @@ class _Body extends StatelessWidget {
 
 class _SubjectCard extends StatelessWidget {
   final String name;
-  final int? documentCount;
+  final String description;
+  final int id;
 
-  const _SubjectCard({required this.name, this.documentCount});
+  const _SubjectCard({
+    required this.name,
+    required this.description,
+    required this.id,
+  });
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: () {},
-      child: Container(
-        padding: const EdgeInsets.all(18),
-        decoration: BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.circular(16),
-          border: Border.all(color: CustomColors.lavender, width: 1.5),
-        ),
-        child: Row(
-          children: [
-            Container(
-              width: 48,
-              height: 48,
-              decoration: BoxDecoration(
-                color: CustomColors.bgLight,
-                borderRadius: BorderRadius.circular(12),
-              ),
-              child: Icon(
-                Icons.book_rounded,
-                color: CustomColors.primary,
-                size: 24,
-              ),
+    return BlocBuilder<HomeCubit, HomeState>(
+      builder: (context, state) {
+        return GestureDetector(
+          onTap: () {
+            context.pushNamed(
+              Routes.viewSubject,
+              extra: {'idSubject': id, 'nameSubject': name},
+            );
+          },
+          child: Container(
+            padding: const EdgeInsets.all(18),
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(16),
+              border: Border.all(color: CustomColors.lavender, width: 1.5),
             ),
-            const SizedBox(width: 14),
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
+            child: Row(
               children: [
-                Text(
-                  name,
-                  style: TextStyle(
-                    color: CustomColors.primaryStrong,
-                    fontSize: 15,
-                    fontWeight: FontWeight.w600,
+                Container(
+                  width: 48,
+                  height: 48,
+                  decoration: BoxDecoration(
+                    color: CustomColors.bgLight,
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                  child: Icon(
+                    Icons.book_rounded,
+                    color: CustomColors.primary,
+                    size: 24,
                   ),
                 ),
-                const SizedBox(height: 2),
-                Text(
-                  '$documentCount Documentos',
-                  style: TextStyle(fontSize: 13, color: Colors.grey),
+                const SizedBox(width: 14),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      name,
+                      style: TextStyle(
+                        color: CustomColors.primaryStrong,
+                        fontSize: 15,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                    const SizedBox(height: 2),
+                    Text(
+                      description,
+                      style: TextStyle(fontSize: 13, color: Colors.grey),
+                    ),
+                  ],
                 ),
               ],
             ),
-          ],
-        ),
-      ),
+          ),
+        );
+      },
     );
   }
 }

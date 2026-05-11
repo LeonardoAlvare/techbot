@@ -1,10 +1,15 @@
 class SubjectModel {
-  final int? id;
-  final String? name;
-  final String? description;
-  final Count? count;
+  final int id;
+  final String name;
+  final String description;
+  final Count count;
 
-  SubjectModel({this.id, this.name, this.description, this.count});
+  SubjectModel({
+    required this.id,
+    required this.name,
+    required this.description,
+    required this.count,
+  });
 
   SubjectModel copyWith({
     int? id,
@@ -22,21 +27,21 @@ class SubjectModel {
     id: json["id"],
     name: json["name"],
     description: json["description"],
-    count: json["_count"] == null ? null : Count.fromJson(json["_count"]),
+    count: Count.fromJson(json["_count"]),
   );
 
   Map<String, dynamic> toJson() => {
     "id": id,
     "name": name,
     "description": description,
-    "_count": count?.toJson(),
+    "_count": count.toJson(),
   };
 }
 
 class Count {
-  final int? documents;
+  final int documents;
 
-  Count({this.documents});
+  Count({required this.documents});
 
   Count copyWith({int? documents}) =>
       Count(documents: documents ?? this.documents);

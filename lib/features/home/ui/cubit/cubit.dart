@@ -1,6 +1,5 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-// import 'package:techbot/features/home/models/create_subject_model.dart';
 import 'package:techbot/features/home/models/subject_model.dart';
 import 'package:techbot/features/home/repository/repository.dart';
 
@@ -19,30 +18,22 @@ class HomeCubit extends Cubit<HomeState> {
     emit(UpdateInput(state.model.copyWith(description: description)));
   }
 
-  // Future<void> createSubject(String token) async {
-  //   emit(HomeLoading(state.model));
-  //   try {
-  //     final subject = await repository.createSubject(
-  //       token,
-  //       state.model.name,
-  //       state.model.description,
-  //     );
-  //     emit(
-  //       HomeSuccess(
-  //         state.model.copyWith(
-  //           subjects: [...state.model.subjects ?? [], subject],
-  //         ),
-  //       ),
-  //     );
-  //   } catch (e) {
-  //     emit(HomeError(state.model));
-  //   }
-  // }
+  Future<void> createSubject() async {
+    emit(HomeLoading(state.model));
 
-  Future<void> getSubject(String token) async {
+    try {
+      await repository.createSubject(state.model.name, state.model.description);
+
+      await getSubject();
+    } catch (e) {
+      emit(HomeError(state.model));
+    }
+  }
+
+  Future<void> getSubject() async {
     emit(HomeLoading(state.model));
     try {
-      final subjects = await repository.getSubject(token);
+      final subjects = await repository.getSubject();
       emit(HomeSuccess(state.model.copyWith(subjects: subjects)));
     } catch (e) {
       emit(HomeError(state.model));

@@ -11,13 +11,11 @@ class HomeRepositoryImp implements HomeRepository {
 
   @override
   Future<CreateSubjectModel> createSubject(
-    String token,
     String name,
     String description,
   ) async {
     final response = await dio.post(
       '${ApiUrl.baseUrl}/subject/',
-      options: Options(headers: {'Authorization': 'Bearer $token'}),
       data: {'name': name, 'description': description},
     );
 
@@ -25,11 +23,8 @@ class HomeRepositoryImp implements HomeRepository {
   }
 
   @override
-  Future<List<SubjectModel>> getSubject(String token) async {
-    final response = await dio.get(
-      '${ApiUrl.baseUrl}/subject/',
-      options: Options(headers: {'Authorization': 'Bearer $token'}),
-    );
+  Future<List<SubjectModel>> getSubject() async {
+    final response = await dio.get('${ApiUrl.baseUrl}/subject/');
 
     return (response.data as List)
         .map((e) => SubjectModel.fromJson(e))

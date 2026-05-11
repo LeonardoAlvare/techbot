@@ -143,7 +143,6 @@ class _Body extends StatelessWidget {
                             keyboardType: TextInputType.emailAddress,
                             onChanged: (value) {
                               context.read<LoginCubit>().setEmail(value);
-                              print(value);
                             },
                           ),
 
@@ -164,7 +163,6 @@ class _Body extends StatelessWidget {
                             obscureText: !state.model.isPasswordVisible,
                             onChanged: (value) {
                               context.read<LoginCubit>().setPassword(value);
-                              print(value);
                             },
                             onChangeVisible: () {
                               context
