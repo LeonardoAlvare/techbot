@@ -40,4 +40,13 @@ class AuthRepositoryImp implements AuthRepository {
 
     return AuthModel.fromJson(response.data);
   }
+
+  @override
+  Future<AuthModel> refresh(String refreshToken) async {
+    final response = await dio.post(
+      '${ApiUrl.baseUrl}/auth/refresh',
+      options: Options(headers: {'Authorization': 'Bearer $refreshToken'}),
+    );
+    return AuthModel.fromJson(response.data);
+  }
 }

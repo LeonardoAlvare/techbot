@@ -51,5 +51,5 @@ class Model extends Equatable {
   );
 
   @override
-  List<Object> get props => [name, description, ?subjects];
+  List<Object> get props => [name, description, subjects ?? []];
 }

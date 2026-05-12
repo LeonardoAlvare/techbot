@@ -8,4 +8,5 @@ abstract class AuthRepository {
     required String email,
     required String password,
   });
+  Future<AuthModel> refresh(String refreshToken);
 }
