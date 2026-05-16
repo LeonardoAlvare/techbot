@@ -1,8 +1,5 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:go_router/go_router.dart';
 import 'package:techbot/core/theme/colors.dart';
 import 'package:techbot/features/view_subject/ui/cubit/cubit.dart';
 import 'package:techbot/features/view_subject/widgets/create_document_dialog.dart';
@@ -59,13 +56,9 @@ class ViewSubjectPage extends StatelessWidget {
             showDialog(
               barrierDismissible: false,
               context: context,
-              builder: (context) => CreateDocumentDialog(
-                onChangeName: (value) => cubit.setNameDocument(value),
-                onFileSelected: (File file) => cubit.setFile(file),
-                addDocument: () {
-                  cubit.uploadDocument(idSubject);
-                  context.pop();
-                },
+              builder: (context) => BlocProvider.value(
+                value: cubit,
+                child: CreateDocumentDialog(idSubject: idSubject),
               ),
             );
           },

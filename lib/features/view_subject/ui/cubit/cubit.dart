@@ -31,6 +31,8 @@ class ViewSubjectCubit extends Cubit<ViewSubjectState> {
   }
 
   Future<void> uploadDocument(int idSubject) async {
+    emit(ViewSubjectLoading(state.model));
+
     try {
       await repository.createDocument(
         state.model.nameDocument,
@@ -38,7 +40,7 @@ class ViewSubjectCubit extends Cubit<ViewSubjectState> {
         idSubject,
       );
       emit(UploadDocumentSuccess(state.model));
-      getDocuments(idSubject);
+      await getDocuments(idSubject);
     } catch (e) {
       emit(UploadDocumentError(state.model, e.toString()));
     }

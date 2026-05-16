@@ -29,6 +29,14 @@ final class UpdateInput extends HomeState {
   const UpdateInput(super.model);
 }
 
+final class SubjectCreatedSuccess extends HomeState {
+  const SubjectCreatedSuccess(super.model);
+}
+
+final class SubjectCreatedError extends HomeState {
+  const SubjectCreatedError(super.model);
+}
+
 class Model extends Equatable {
   final String name;
   final String description;

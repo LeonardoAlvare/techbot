@@ -23,10 +23,10 @@ class HomeCubit extends Cubit<HomeState> {
 
     try {
       await repository.createSubject(state.model.name, state.model.description);
-
+      emit(SubjectCreatedSuccess(state.model));
       await getSubject();
     } catch (e) {
-      emit(HomeError(state.model));
+      emit(SubjectCreatedError(state.model));
     }
   }
 
