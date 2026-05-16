@@ -39,7 +39,7 @@ class LoginCubit extends Cubit<LoginState> {
       getIt<AuthSession>().setToken(authModel.accessToken);
       emit(LoginSuccess(state.model, authModel));
     } catch (e) {
-      emit(LoginError(state.model));
+      emit(LoginError(state.model, e.toString()));
     }
   }
 }

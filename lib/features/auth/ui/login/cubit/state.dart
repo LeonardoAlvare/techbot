@@ -26,7 +26,8 @@ final class LoginSuccess extends LoginState {
 }
 
 final class LoginError extends LoginState {
-  const LoginError(super.model);
+  final String message;
+  const LoginError(super.model, this.message);
 }
 
 final class UpdateInput extends LoginState {

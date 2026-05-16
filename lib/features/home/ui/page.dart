@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:techbot/core/router/router.dart';
 import 'package:techbot/core/theme/colors.dart';
+import 'package:techbot/core/widgets/toast.dart';
 import 'package:techbot/features/home/ui/cubit/cubit.dart';
 import 'package:techbot/features/home/widgets/create_subject_dialog.dart';
 
@@ -88,6 +89,22 @@ class _Body extends StatelessWidget {
                       'No hay materias cargadas',
                       style: TextStyle(color: Colors.grey, fontSize: 15),
                     ),
+                  );
+                }
+
+                if (state is HomeError) {
+                  return const Center(
+                    child: Text(
+                      'Error al cargar las materias',
+                      style: TextStyle(color: Colors.grey, fontSize: 15),
+                    ),
+                  );
+                }
+
+                if (state is SubjectCreatedSuccess) {
+                  Toast.show(
+                    context: context,
+                    text: 'Materia creada con éxito',
                   );
                 }
 

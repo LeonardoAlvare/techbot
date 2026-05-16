@@ -5,7 +5,7 @@ sealed class ViewSubjectState extends Equatable {
   const ViewSubjectState(this.model);
 
   @override
-  List<Object> get props => [];
+  List<Object> get props => [model];
 }
 
 final class ViewSubjectInitial extends ViewSubjectState {
@@ -60,5 +60,9 @@ class Model extends Equatable {
   );
 
   @override
-  List<Object> get props => [documents ?? [], ?selectedFile, nameDocument];
+  List<Object> get props => [
+    documents ?? [],
+    selectedFile ?? Object(),
+    nameDocument,
+  ];
 }

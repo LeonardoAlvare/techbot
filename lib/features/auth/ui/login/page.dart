@@ -49,7 +49,7 @@ class _Body extends StatelessWidget {
             icon: Icons.error_rounded,
             iconColor: Color(0xFFE53935),
             title: '¡Ups!',
-            subtitle: 'Error al iniciar sesión.',
+            subtitle: state.message,
           );
         }
       },

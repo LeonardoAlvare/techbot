@@ -11,6 +11,7 @@ class CustomInput extends StatelessWidget {
   final void Function(String)? onChanged;
   final void Function()? onChangeVisible;
   final int maxLines;
+  final bool enabled;
 
   const CustomInput({
     super.key,
@@ -23,11 +24,13 @@ class CustomInput extends StatelessWidget {
     this.onChanged,
     this.onChangeVisible,
     this.maxLines = 1,
+    this.enabled = true,
   });
 
   @override
   Widget build(BuildContext context) {
     return TextFormField(
+      enabled: enabled,
       controller: controller,
       validator: validator,
       keyboardType: keyboardType,
