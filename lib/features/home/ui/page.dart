@@ -171,23 +171,27 @@ class _SubjectCard extends StatelessWidget {
                   ),
                 ),
                 const SizedBox(width: 14),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      name,
-                      style: TextStyle(
-                        color: CustomColors.primaryStrong,
-                        fontSize: 15,
-                        fontWeight: FontWeight.w600,
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        name,
+                        style: TextStyle(
+                          color: CustomColors.primaryStrong,
+                          fontSize: 15,
+                          fontWeight: FontWeight.w600,
+                        ),
                       ),
-                    ),
-                    const SizedBox(height: 2),
-                    Text(
-                      description,
-                      style: TextStyle(fontSize: 13, color: Colors.grey),
-                    ),
-                  ],
+                      const SizedBox(height: 2),
+                      Text(
+                        description,
+                        maxLines: 3,
+                        softWrap: true,
+                        style: TextStyle(fontSize: 13, color: Colors.grey),
+                      ),
+                    ],
+                  ),
                 ),
               ],
             ),

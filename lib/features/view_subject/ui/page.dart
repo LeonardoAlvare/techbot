@@ -108,7 +108,6 @@ class _Body extends StatelessWidget {
           }
 
           return ListView.separated(
-            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
             itemCount: documents.length,
             separatorBuilder: (_, __) => const SizedBox(height: 10),
             itemBuilder: (context, index) =>
