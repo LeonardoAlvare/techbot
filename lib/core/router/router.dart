@@ -4,6 +4,8 @@ import 'package:techbot/features/auth/ui/login/cubit/cubit.dart';
 import 'package:techbot/features/auth/ui/login/page.dart';
 import 'package:techbot/features/auth/ui/register/cubit/cubit.dart';
 import 'package:techbot/features/auth/ui/register/page.dart';
+import 'package:techbot/features/document/children/summary/ui/cubit/cubit.dart';
+import 'package:techbot/features/document/children/summary/ui/page.dart';
 import 'package:techbot/features/document/children/view_documet/ui/cubit/cubit.dart';
 import 'package:techbot/features/document/children/view_documet/ui/page.dart';
 import 'package:techbot/features/document/ui/page.dart';
@@ -18,12 +20,14 @@ class Routes {
   static const String home = 'home';
   static const String viewSubject = 'view_subject';
   static const String viewDocument = 'view_document';
+  static const String summary = 'summary';
 
   static const String loginPath = '/$login';
   static const String registerPath = '/$register';
   static const String homePath = '/$home';
   static const String viewSubjectPath = '/$viewSubject';
   static const String viewDocumentPath = '/$viewDocument';
+  static const String summaryPath = '/$summary';
 }
 
 class AppRouter {
@@ -83,6 +87,18 @@ class AppRouter {
 
                   return ViewDocumentPage(
                     cubit: getIt<ViewDocumentCubit>(),
+                    documentId: extra?['documentId'] as int,
+                  );
+                },
+              ),
+              GoRoute(
+                name: Routes.summary,
+                path: Routes.summaryPath,
+                builder: (context, state) {
+                  final extra = state.extra as Map<String, dynamic>?;
+
+                  return SummaryPage(
+                    cubit: getIt<SummaryCubit>(),
                     documentId: extra?['documentId'] as int,
                   );
                 },
