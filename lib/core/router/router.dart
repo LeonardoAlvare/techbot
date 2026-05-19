@@ -4,6 +4,9 @@ import 'package:techbot/features/auth/ui/login/cubit/cubit.dart';
 import 'package:techbot/features/auth/ui/login/page.dart';
 import 'package:techbot/features/auth/ui/register/cubit/cubit.dart';
 import 'package:techbot/features/auth/ui/register/page.dart';
+import 'package:techbot/features/document/children/view_documet/ui/cubit/cubit.dart';
+import 'package:techbot/features/document/children/view_documet/ui/page.dart';
+import 'package:techbot/features/document/ui/page.dart';
 import 'package:techbot/features/home/ui/cubit/cubit.dart';
 import 'package:techbot/features/home/ui/page.dart';
 import 'package:techbot/features/view_subject/ui/cubit/cubit.dart';
@@ -14,11 +17,13 @@ class Routes {
   static const String register = 'register';
   static const String home = 'home';
   static const String viewSubject = 'view_subject';
+  static const String viewDocument = 'view_document';
 
   static const String loginPath = '/$login';
   static const String registerPath = '/$register';
   static const String homePath = '/$home';
   static const String viewSubjectPath = '/$viewSubject';
+  static const String viewDocumentPath = '/$viewDocument';
 }
 
 class AppRouter {
@@ -52,6 +57,39 @@ class AppRouter {
             nameSubject: extra['nameSubject'] as String,
           );
         },
+      ),
+      StatefulShellRoute.indexedStack(
+        builder: (context, state, child) {
+          final extra = state.extra as Map<String, dynamic>?;
+
+          final title = extra?['title'] as String;
+
+          final documentId = extra?['documentId'] as int;
+
+          return DocumentPage(
+            navigationShell: child,
+            title: title,
+            documentId: documentId,
+          );
+        },
+        branches: [
+          StatefulShellBranch(
+            routes: [
+              GoRoute(
+                name: Routes.viewDocument,
+                path: Routes.viewDocumentPath,
+                builder: (context, state) {
+                  final extra = state.extra as Map<String, dynamic>?;
+
+                  return ViewDocumentPage(
+                    cubit: getIt<ViewDocumentCubit>(),
+                    documentId: extra?['documentId'] as int,
+                  );
+                },
+              ),
+            ],
+          ),
+        ],
       ),
     ],
   );

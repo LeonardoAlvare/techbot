@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
+import 'package:techbot/core/router/router.dart';
 import 'package:techbot/core/theme/colors.dart';
 import 'package:techbot/features/view_subject/ui/cubit/cubit.dart';
 import 'package:techbot/features/view_subject/widgets/create_document_dialog.dart';
@@ -110,8 +112,10 @@ class _Body extends StatelessWidget {
           return ListView.separated(
             itemCount: documents.length,
             separatorBuilder: (_, __) => const SizedBox(height: 10),
-            itemBuilder: (context, index) =>
-                _DocumentCard(title: documents[index].title ?? ''),
+            itemBuilder: (context, index) => _DocumentCard(
+              title: documents[index].title ?? '',
+              documentId: documents[index].id ?? 0,
+            ),
           );
         },
       ),
@@ -121,14 +125,18 @@ class _Body extends StatelessWidget {
 
 class _DocumentCard extends StatelessWidget {
   final String title;
+  final int documentId;
 
-  const _DocumentCard({required this.title});
+  const _DocumentCard({required this.title, required this.documentId});
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        // TODO: navegar al detalle del documento
+        context.pushNamed(
+          Routes.viewDocument,
+          extra: {'title': title, 'documentId': documentId},
+        );
       },
       child: Container(
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
