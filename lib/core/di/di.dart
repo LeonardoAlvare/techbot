@@ -8,6 +8,9 @@ import 'package:techbot/features/auth/repository/repository.dart';
 import 'package:techbot/features/auth/repository/repository_imp.dart';
 import 'package:techbot/features/auth/ui/login/cubit/cubit.dart';
 import 'package:techbot/features/auth/ui/register/cubit/cubit.dart';
+import 'package:techbot/features/document/children/flashcard/repository/repositorty.dart';
+import 'package:techbot/features/document/children/flashcard/repository/repository_imp.dart';
+import 'package:techbot/features/document/children/flashcard/ui/cubit/cubit.dart';
 import 'package:techbot/features/document/children/summary/repository/repository.dart';
 import 'package:techbot/features/document/children/summary/repository/repository_imp.dart';
 import 'package:techbot/features/document/children/summary/ui/cubit/cubit.dart';
@@ -89,6 +92,12 @@ Future<void> setupDi() async {
     );
   }
 
+  if (!getIt.isRegistered<FlashcardRepository>()) {
+    getIt.registerLazySingleton<FlashcardRepository>(
+      () => FlashcardRepositoryImp(getIt<Dio>()),
+    );
+  }
+
   //? Cubit
   if (!getIt.isRegistered<LoginCubit>()) {
     getIt.registerFactory<LoginCubit>(
@@ -121,6 +130,12 @@ Future<void> setupDi() async {
   if (!getIt.isRegistered<SummaryCubit>()) {
     getIt.registerFactory<SummaryCubit>(
       () => SummaryCubit(getIt<SummaryRepository>()),
+    );
+  }
+
+  if (!getIt.isRegistered<FlashcardCubit>()) {
+    getIt.registerFactory<FlashcardCubit>(
+      () => FlashcardCubit(getIt<FlashcardRepository>()),
     );
   }
 }

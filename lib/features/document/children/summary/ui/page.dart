@@ -39,27 +39,30 @@ class _Content extends StatelessWidget {
         return Stack(
           children: [
             Center(
-              child: Container(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 16,
-                  vertical: 14,
-                ),
-                margin: const EdgeInsets.only(bottom: 60),
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(16),
-                ),
-                child: SingleChildScrollView(
-                  child: Text(
-                    state.model.summary?.content ?? 'No hay resumen disponible',
-                    style: const TextStyle(
-                      fontSize: 14,
-                      fontWeight: FontWeight.w600,
-                      letterSpacing: 0.1,
-                    ),
-                  ),
-                ),
-              ),
+              child: state.model.summary?.content?.isNotEmpty == true
+                  ? Container(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 16,
+                        vertical: 14,
+                      ),
+                      margin: const EdgeInsets.only(bottom: 60),
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(16),
+                      ),
+                      child: SingleChildScrollView(
+                        child: Text(
+                          state.model.summary?.content ??
+                              'No hay resumen disponible',
+                          style: const TextStyle(
+                            fontSize: 14,
+                            fontWeight: FontWeight.w600,
+                            letterSpacing: 0.1,
+                          ),
+                        ),
+                      ),
+                    )
+                  : Text('No hay resumen disponible'),
             ),
             Positioned(
               bottom: 0,
