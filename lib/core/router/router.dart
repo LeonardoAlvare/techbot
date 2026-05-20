@@ -13,10 +13,13 @@ import 'package:techbot/features/document/children/view_documet/ui/page.dart';
 import 'package:techbot/features/document/ui/page.dart';
 import 'package:techbot/features/home/ui/cubit/cubit.dart';
 import 'package:techbot/features/home/ui/page.dart';
+import 'package:techbot/features/splash/ui/cubit/cubit.dart';
+import 'package:techbot/features/splash/ui/page.dart';
 import 'package:techbot/features/view_subject/ui/cubit/cubit.dart';
 import 'package:techbot/features/view_subject/ui/page.dart';
 
 class Routes {
+  static const String splash = 'splash';
   static const String login = 'login';
   static const String register = 'register';
   static const String home = 'home';
@@ -25,6 +28,7 @@ class Routes {
   static const String summary = 'summary';
   static const String flashcard = 'flashcard';
 
+  static const String splashPath = '/$splash';
   static const String loginPath = '/$login';
   static const String registerPath = '/$register';
   static const String homePath = '/$home';
@@ -36,8 +40,13 @@ class Routes {
 
 class AppRouter {
   static GoRouter router = GoRouter(
-    initialLocation: Routes.loginPath,
+    initialLocation: Routes.splashPath,
     routes: [
+      GoRoute(
+        name: Routes.splash,
+        path: Routes.splashPath,
+        builder: (context, state) => SplashScreen(cubit: getIt<SplashCubit>()),
+      ),
       GoRoute(
         name: Routes.login,
         path: Routes.loginPath,
