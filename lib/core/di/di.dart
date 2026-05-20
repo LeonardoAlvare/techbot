@@ -2,6 +2,7 @@ import 'package:cookie_jar/cookie_jar.dart';
 import 'package:dio/dio.dart';
 import 'package:dio_cookie_manager/dio_cookie_manager.dart';
 import 'package:get_it/get_it.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:techbot/core/service/auth_interceptor.dart';
 import 'package:techbot/core/service/auth_session.dart';
 import 'package:techbot/features/auth/repository/repository.dart';
@@ -20,6 +21,7 @@ import 'package:techbot/features/document/children/view_documet/ui/cubit/cubit.d
 import 'package:techbot/features/home/repository/repository.dart';
 import 'package:techbot/features/home/repository/repository_imp.dart';
 import 'package:techbot/features/home/ui/cubit/cubit.dart';
+import 'package:techbot/features/splash/ui/cubit/cubit.dart';
 import 'package:techbot/features/view_subject/repository/repository.dart';
 import 'package:techbot/features/view_subject/repository/repository_imp.dart';
 import 'package:techbot/features/view_subject/ui/cubit/cubit.dart';
@@ -27,7 +29,10 @@ import 'package:techbot/features/view_subject/ui/cubit/cubit.dart';
 final getIt = GetIt.instance;
 Future<void> setupDi() async {
   // CookieJar para manejar cookies
-  final cookieJar = CookieJar();
+  final appDocDir = await getApplicationDocumentsDirectory();
+  final cookieJar = PersistCookieJar(
+    storage: FileStorage('${appDocDir.path}/.cookies/'),
+  );
   getIt.registerLazySingleton<CookieJar>(() => cookieJar);
 
   getIt.registerLazySingleton<AuthSession>(() => AuthSession());
@@ -99,6 +104,12 @@ Future<void> setupDi() async {
   }
 
   //? Cubit
+  if (!getIt.isRegistered<SplashCubit>()) {
+    getIt.registerFactory<SplashCubit>(
+      () => SplashCubit(getIt<AuthRepository>(), getIt<CookieJar>()),
+    );
+  }
+
   if (!getIt.isRegistered<LoginCubit>()) {
     getIt.registerFactory<LoginCubit>(
       () => LoginCubit(getIt<AuthRepository>()),
