@@ -134,7 +134,7 @@ class _DocumentCard extends StatelessWidget {
     return GestureDetector(
       onTap: () {
         context.pushNamed(
-          Routes.viewDocument,
+          Routes.quiz,
           extra: {'title': title, 'documentId': documentId},
         );
       },
