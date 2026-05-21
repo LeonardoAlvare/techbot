@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:techbot/core/theme/colors.dart';
 import 'package:techbot/features/document/children/quiz/ui/cubit/cubit.dart';
+import 'package:techbot/features/document/widgets/button_add.dart';
 
 class QuizPage extends StatelessWidget {
   final int documentId;
@@ -43,7 +44,11 @@ class _Content extends StatelessWidget {
               Positioned(
                 bottom: 0,
                 right: 0,
-                child: _NewQuizButton(documentId: documentId),
+                child: ButtonAdd(
+                  onPressed: () =>
+                      context.read<QuizCubit>().createQuiz(documentId),
+                  text: 'Nuevo Quiz',
+                ),
               ),
             ],
           );
@@ -56,7 +61,11 @@ class _Content extends StatelessWidget {
               Positioned(
                 bottom: 0,
                 right: 0,
-                child: _NewQuizButton(documentId: documentId),
+                child: ButtonAdd(
+                  onPressed: () =>
+                      context.read<QuizCubit>().createQuiz(documentId),
+                  text: 'Nuevo Quiz',
+                ),
               ),
             ],
           );
@@ -64,35 +73,6 @@ class _Content extends StatelessWidget {
 
         return _QuizView(model: state.model);
       },
-    );
-  }
-}
-
-// ─────────────────────────────────────────────
-// Botón nuevo quiz
-// ─────────────────────────────────────────────
-
-class _NewQuizButton extends StatelessWidget {
-  final int documentId;
-  const _NewQuizButton({required this.documentId});
-
-  @override
-  Widget build(BuildContext context) {
-    return ElevatedButton.icon(
-      onPressed: () => context.read<QuizCubit>().createQuiz(documentId),
-      icon: const Icon(Icons.add, color: Colors.white),
-      label: const Text(
-        'Nuevo Quiz',
-        style: TextStyle(color: Colors.white, fontSize: 15),
-      ),
-      style: ElevatedButton.styleFrom(
-        backgroundColor: CustomColors.primary,
-        foregroundColor: Colors.white,
-        padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 14),
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(32)),
-        elevation: 4,
-        shadowColor: CustomColors.primary.withOpacity(0.4),
-      ),
     );
   }
 }

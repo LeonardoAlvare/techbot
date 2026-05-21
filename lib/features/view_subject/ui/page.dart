@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:techbot/core/router/router.dart';
 import 'package:techbot/core/theme/colors.dart';
+import 'package:techbot/core/widgets/appbar.dart';
 import 'package:techbot/features/view_subject/ui/cubit/cubit.dart';
 import 'package:techbot/features/view_subject/widgets/create_document_dialog.dart';
 
@@ -23,34 +24,10 @@ class ViewSubjectPage extends StatelessWidget {
     return BlocProvider.value(
       value: cubit..getDocuments(idSubject),
       child: Scaffold(
-        appBar: AppBar(
-          backgroundColor: CustomColors.bgLight,
-          elevation: 0,
-          surfaceTintColor: Colors.transparent,
-          leading: GestureDetector(
-            onTap: () => Navigator.pop(context),
-            child: Container(
-              margin: const EdgeInsets.all(10),
-              decoration: BoxDecoration(
-                color: CustomColors.lavender,
-                borderRadius: BorderRadius.circular(10),
-              ),
-              child: const Icon(
-                Icons.arrow_back_ios_new_rounded,
-                color: CustomColors.primary,
-                size: 18,
-              ),
-            ),
-          ),
-          title: Text(
-            nameSubject,
-            style: const TextStyle(
-              color: CustomColors.textDark,
-              fontSize: 18,
-              fontWeight: FontWeight.bold,
-            ),
-          ),
-          centerTitle: false,
+        appBar: CustomAppBar(
+          title: nameSubject,
+          onBack: () => Navigator.pop(context),
+          centerTitle: true,
         ),
         body: _Body(),
         floatingActionButton: FloatingActionButton.extended(
