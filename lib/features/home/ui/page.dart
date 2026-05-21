@@ -3,11 +3,10 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:techbot/core/router/router.dart';
 import 'package:techbot/core/theme/colors.dart';
+import 'package:techbot/core/widgets/appbar.dart';
 import 'package:techbot/core/widgets/toast.dart';
 import 'package:techbot/features/home/ui/cubit/cubit.dart';
 import 'package:techbot/features/home/widgets/create_subject_dialog.dart';
-
-part 'sections/header.dart';
 
 class HomePage extends StatelessWidget {
   final HomeCubit cubit;
@@ -19,8 +18,13 @@ class HomePage extends StatelessWidget {
     return BlocProvider.value(
       value: cubit..getSubject(),
       child: Scaffold(
-        appBar: _Header(
-          onLogout: () => context.pushReplacementNamed(Routes.login),
+        appBar: CustomAppBar(
+          title: 'TeachBot',
+          onLogout: () async {
+            await cubit.logout();
+            if (!context.mounted) return;
+            context.goNamed(Routes.login);
+          },
         ),
         body: _Body(),
         floatingActionButton: FloatingActionButton.extended(

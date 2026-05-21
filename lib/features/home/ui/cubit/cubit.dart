@@ -1,5 +1,8 @@
+import 'package:cookie_jar/cookie_jar.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:techbot/core/di/di.dart';
+import 'package:techbot/core/service/auth_session.dart';
 import 'package:techbot/features/home/models/subject_model.dart';
 import 'package:techbot/features/home/repository/repository.dart';
 
@@ -38,5 +41,11 @@ class HomeCubit extends Cubit<HomeState> {
     } catch (e) {
       emit(HomeError(state.model));
     }
+  }
+
+  Future<void> logout() async {
+    final cookieJar = getIt<CookieJar>();
+    await cookieJar.deleteAll();
+    getIt<AuthSession>().clear();
   }
 }

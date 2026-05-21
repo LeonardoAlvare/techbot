@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:techbot/core/theme/colors.dart';
 import 'package:techbot/features/document/children/flashcard/ui/cubit/cubit.dart';
+import 'package:techbot/features/document/widgets/button_add.dart';
 
 class FlashcardPage extends StatelessWidget {
   final int documentId;
@@ -70,27 +71,10 @@ class _Content extends StatelessWidget {
             Positioned(
               bottom: 0,
               right: 0,
-              child: ElevatedButton.icon(
+              child: ButtonAdd(
                 onPressed: () =>
                     context.read<FlashcardCubit>().createFlashcard(documentId),
-                icon: const Icon(Icons.add, color: Colors.white),
-                label: const Text(
-                  'Nuevas Cartas',
-                  style: TextStyle(color: Colors.white, fontSize: 15),
-                ),
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: CustomColors.primary,
-                  foregroundColor: Colors.white,
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 24,
-                    vertical: 14,
-                  ),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(32),
-                  ),
-                  elevation: 4,
-                  shadowColor: CustomColors.primary.withOpacity(0.4),
-                ),
+                text: 'Nuevas Cartas',
               ),
             ),
           ],

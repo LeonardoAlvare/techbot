@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:techbot/core/widgets/appbar.dart';
 
 class DocumentPage extends StatelessWidget {
   final StatefulNavigationShell navigationShell;
@@ -16,7 +17,11 @@ class DocumentPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text(title)),
+      appBar: CustomAppBar(
+        title: title,
+        onBack: () => Navigator.pop(context),
+        centerTitle: true,
+      ),
       body: navigationShell,
       bottomNavigationBar: _StyledBottomNav(navigationShell: navigationShell),
     );
