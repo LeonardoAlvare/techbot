@@ -54,7 +54,13 @@ class AppRouter {
       GoRoute(
         name: Routes.login,
         path: Routes.loginPath,
-        builder: (context, state) => PageLogin(loginCubit: getIt<LoginCubit>()),
+        builder: (context, state) {
+          final extra = state.extra as Map<String, dynamic>?;
+          return PageLogin(
+            loginCubit: getIt<LoginCubit>(),
+            showBiometric: extra?['showBiometric'] as bool? ?? false,
+          );
+        },
       ),
       GoRoute(
         name: Routes.register,

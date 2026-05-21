@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:techbot/core/di/di.dart';
 import 'package:techbot/core/router/router.dart';
+import 'package:techbot/core/service/biometric_service.dart';
 import 'package:techbot/core/theme/colors.dart';
 import 'package:techbot/core/widgets/appbar.dart';
 import 'package:techbot/core/widgets/toast.dart';
@@ -23,7 +25,13 @@ class HomePage extends StatelessWidget {
           onLogout: () async {
             await cubit.logout();
             if (!context.mounted) return;
-            context.goNamed(Routes.login);
+            final biometricAvailable = await getIt<BiometricService>()
+                .isAvailable();
+            if (!context.mounted) return;
+            context.goNamed(
+              Routes.login,
+              extra: {'showBiometric': biometricAvailable},
+            );
           },
         ),
         body: _Body(),
