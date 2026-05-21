@@ -16,8 +16,10 @@ class SplashScreen extends StatelessWidget {
         listener: (context, state) {
           if (state is SplashAuthenticated) {
             context.goNamed(Routes.home);
+          } else if (state is SplashBiometricAvailable) {
+            context.goNamed(Routes.login, extra: {'showBiometric': true});
           } else if (state is SplashUnauthenticated) {
-            context.goNamed(Routes.login);
+            context.goNamed(Routes.login, extra: {'showBiometric': false});
           }
         },
         child: const Scaffold(body: Center(child: CircularProgressIndicator())),

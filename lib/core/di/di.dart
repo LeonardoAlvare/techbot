@@ -5,6 +5,7 @@ import 'package:get_it/get_it.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:techbot/core/service/auth_interceptor.dart';
 import 'package:techbot/core/service/auth_session.dart';
+import 'package:techbot/core/service/biometric_service.dart';
 import 'package:techbot/features/auth/repository/repository.dart';
 import 'package:techbot/features/auth/repository/repository_imp.dart';
 import 'package:techbot/features/auth/ui/login/cubit/cubit.dart';
@@ -74,6 +75,9 @@ Future<void> setupDi() async {
     ),
   );
 
+  // ? Service
+  getIt.registerLazySingleton<BiometricService>(() => BiometricService());
+
   //? Repository
 
   if (!getIt.isRegistered<HomeRepository>()) {
@@ -115,7 +119,11 @@ Future<void> setupDi() async {
   //? Cubit
   if (!getIt.isRegistered<SplashCubit>()) {
     getIt.registerFactory<SplashCubit>(
-      () => SplashCubit(getIt<AuthRepository>(), getIt<CookieJar>()),
+      () => SplashCubit(
+        getIt<AuthRepository>(),
+        getIt<CookieJar>(),
+        getIt<BiometricService>(),
+      ),
     );
   }
 

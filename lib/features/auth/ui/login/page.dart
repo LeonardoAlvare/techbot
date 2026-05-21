@@ -11,20 +11,26 @@ import 'package:techbot/features/auth/ui/widgets/result_alert.dart';
 
 class PageLogin extends StatelessWidget {
   final LoginCubit loginCubit;
+  final bool showBiometric;
 
-  const PageLogin({super.key, required this.loginCubit});
+  const PageLogin({
+    super.key,
+    required this.loginCubit,
+    this.showBiometric = false,
+  });
 
   @override
   Widget build(BuildContext context) {
     return BlocProvider.value(
       value: loginCubit,
-      child: Scaffold(body: _Body()),
+      child: Scaffold(body: _Body(showBiometric: showBiometric)),
     );
   }
 }
 
 class _Body extends StatelessWidget {
-  const _Body();
+  final bool showBiometric;
+  const _Body({required this.showBiometric});
 
   @override
   Widget build(BuildContext context) {
@@ -185,6 +191,31 @@ class _Body extends StatelessWidget {
                             backgroundColor: CustomColors.primary,
                             foregroundColor: Colors.white,
                           ),
+
+                          // Botón biométrico ← agregar aquí
+                          if (showBiometric) ...[
+                            const SizedBox(height: 12),
+                            OutlinedButton.icon(
+                              onPressed: () => context
+                                  .read<LoginCubit>()
+                                  .loginWithBiometric(),
+                              icon: const Icon(Icons.fingerprint, size: 26),
+                              label: const Text(
+                                'Ingresar con huella / Face ID',
+                              ),
+                              style: OutlinedButton.styleFrom(
+                                foregroundColor: CustomColors.primary,
+                                side: BorderSide(
+                                  color: CustomColors.lavender,
+                                  width: 1.5,
+                                ),
+                                minimumSize: const Size(double.infinity, 54),
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(24),
+                                ),
+                              ),
+                            ),
+                          ],
 
                           const SizedBox(height: 20),
 

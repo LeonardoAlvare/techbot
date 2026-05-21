@@ -2,6 +2,7 @@ import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:techbot/core/di/di.dart';
 import 'package:techbot/core/service/auth_session.dart';
+import 'package:techbot/core/service/biometric_service.dart';
 import 'package:techbot/features/auth/models/auth_model.dart';
 import 'package:techbot/features/auth/repository/repository.dart';
 
@@ -35,6 +36,42 @@ class LoginCubit extends Cubit<LoginState> {
       final authModel = await repository.login(
         email: state.model.email,
         password: state.model.password,
+      );
+      getIt<AuthSession>().setToken(authModel.accessToken);
+
+      final biometricService = getIt<BiometricService>();
+      if (await biometricService.isAvailable()) {
+        await biometricService.saveCredentials(
+          state.model.email,
+          state.model.password,
+        );
+      }
+      emit(LoginSuccess(state.model, authModel));
+    } catch (e) {
+      emit(LoginError(state.model, e.toString()));
+    }
+  }
+
+  Future<void> loginWithBiometric() async {
+    emit(LoginLoading(state.model));
+    try {
+      final biometricService = getIt<BiometricService>();
+
+      final authenticated = await biometricService.authenticate();
+      if (!authenticated) {
+        emit(LoginError(state.model, 'Autenticación biométrica cancelada'));
+        return;
+      }
+
+      final credentials = await biometricService.getCredentials();
+      if (credentials == null) {
+        emit(LoginError(state.model, 'No hay credenciales guardadas'));
+        return;
+      }
+
+      final authModel = await repository.login(
+        email: credentials.email,
+        password: credentials.password,
       );
       getIt<AuthSession>().setToken(authModel.accessToken);
       emit(LoginSuccess(state.model, authModel));
