@@ -6,6 +6,8 @@ import 'package:techbot/features/auth/ui/register/cubit/cubit.dart';
 import 'package:techbot/features/auth/ui/register/page.dart';
 import 'package:techbot/features/document/children/flashcard/ui/cubit/cubit.dart';
 import 'package:techbot/features/document/children/flashcard/ui/page.dart';
+import 'package:techbot/features/document/children/quiz/ui/cubit/cubit.dart';
+import 'package:techbot/features/document/children/quiz/ui/page.dart';
 import 'package:techbot/features/document/children/summary/ui/cubit/cubit.dart';
 import 'package:techbot/features/document/children/summary/ui/page.dart';
 import 'package:techbot/features/document/children/view_documet/ui/cubit/cubit.dart';
@@ -27,6 +29,7 @@ class Routes {
   static const String viewDocument = 'view_document';
   static const String summary = 'summary';
   static const String flashcard = 'flashcard';
+  static const String quiz = 'quiz';
 
   static const String splashPath = '/$splash';
   static const String loginPath = '/$login';
@@ -36,6 +39,7 @@ class Routes {
   static const String viewDocumentPath = '/$viewDocument';
   static const String summaryPath = '/$summary';
   static const String flashcardPath = '/$flashcard';
+  static const String quizPath = '/$quiz';
 }
 
 class AppRouter {
@@ -124,6 +128,18 @@ class AppRouter {
 
                   return FlashcardPage(
                     cubit: getIt<FlashcardCubit>(),
+                    documentId: extra?['documentId'] as int,
+                  );
+                },
+              ),
+              GoRoute(
+                name: Routes.quiz,
+                path: Routes.quizPath,
+                builder: (context, state) {
+                  final extra = state.extra as Map<String, dynamic>?;
+
+                  return QuizPage(
+                    cubit: getIt<QuizCubit>(),
                     documentId: extra?['documentId'] as int,
                   );
                 },
