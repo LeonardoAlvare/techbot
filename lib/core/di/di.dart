@@ -22,6 +22,7 @@ import 'package:techbot/features/document/children/summary/ui/cubit/cubit.dart';
 import 'package:techbot/features/document/children/view_documet/repository/repository.dart';
 import 'package:techbot/features/document/children/view_documet/repository/repository_imp.dart';
 import 'package:techbot/features/document/children/view_documet/ui/cubit/cubit.dart';
+import 'package:techbot/features/document/ui/cubit/cubit.dart';
 import 'package:techbot/features/home/repository/repository.dart';
 import 'package:techbot/features/home/repository/repository_imp.dart';
 import 'package:techbot/features/home/ui/cubit/cubit.dart';
@@ -90,6 +91,10 @@ Future<void> setupDi() async {
     getIt.registerLazySingleton<ViewSubjectRepository>(
       () => ViewSubjectRepositoryImp(getIt<Dio>()),
     );
+  }
+
+  if (!getIt.isRegistered<DocumentCubit>()) {
+    getIt.registerLazySingleton<DocumentCubit>(() => DocumentCubit());
   }
 
   if (!getIt.isRegistered<ViewDocumentRepository>()) {
