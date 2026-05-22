@@ -26,6 +26,9 @@ import 'package:techbot/features/document/ui/cubit/cubit.dart';
 import 'package:techbot/features/home/repository/repository.dart';
 import 'package:techbot/features/home/repository/repository_imp.dart';
 import 'package:techbot/features/home/ui/cubit/cubit.dart';
+import 'package:techbot/features/prediction/repository/repository.dart';
+import 'package:techbot/features/prediction/repository/repository_imp.dart';
+import 'package:techbot/features/prediction/ui/cubit/cubit.dart';
 import 'package:techbot/features/splash/ui/cubit/cubit.dart';
 import 'package:techbot/features/view_subject/repository/repository.dart';
 import 'package:techbot/features/view_subject/repository/repository_imp.dart';
@@ -80,7 +83,6 @@ Future<void> setupDi() async {
   getIt.registerLazySingleton<BiometricService>(() => BiometricService());
 
   //? Repository
-
   if (!getIt.isRegistered<HomeRepository>()) {
     getIt.registerLazySingleton<HomeRepository>(
       () => HomeRepositoryImp(getIt<Dio>()),
@@ -118,6 +120,12 @@ Future<void> setupDi() async {
   if (!getIt.isRegistered<QuizRepository>()) {
     getIt.registerLazySingleton<QuizRepository>(
       () => QuizRepositoryImp(getIt<Dio>()),
+    );
+  }
+
+  if (!getIt.isRegistered<PredictionRepository>()) {
+    getIt.registerLazySingleton<PredictionRepository>(
+      () => PredictionRepositoryImp(getIt<Dio>()),
     );
   }
 
@@ -174,5 +182,11 @@ Future<void> setupDi() async {
 
   if (!getIt.isRegistered<QuizCubit>()) {
     getIt.registerFactory<QuizCubit>(() => QuizCubit(getIt<QuizRepository>()));
+  }
+
+  if (!getIt.isRegistered<PredictionCubit>()) {
+    getIt.registerFactory<PredictionCubit>(
+      () => PredictionCubit(getIt<PredictionRepository>()),
+    );
   }
 }

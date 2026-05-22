@@ -12,14 +12,16 @@ import 'package:techbot/features/home/widgets/create_subject_dialog.dart';
 
 class HomePage extends StatelessWidget {
   final HomeCubit cubit;
+  final _scaffoldKey = GlobalKey<ScaffoldState>();
 
-  const HomePage({super.key, required this.cubit});
+  HomePage({super.key, required this.cubit});
 
   @override
   Widget build(BuildContext context) {
     return BlocProvider.value(
       value: cubit..getSubject(),
       child: Scaffold(
+        key: _scaffoldKey,
         appBar: CustomAppBar(
           title: 'TeachBot',
           onLogout: () async {
@@ -33,7 +35,9 @@ class HomePage extends StatelessWidget {
               extra: {'showBiometric': biometricAvailable},
             );
           },
+          onAvatarTap: () => _scaffoldKey.currentState?.openDrawer(),
         ),
+        drawer: _Drawer(cubit),
         body: _Body(),
         floatingActionButton: FloatingActionButton.extended(
           onPressed: () {
@@ -210,6 +214,57 @@ class _SubjectCard extends StatelessWidget {
           ),
         );
       },
+    );
+  }
+}
+
+class _Drawer extends StatelessWidget {
+  final HomeCubit cubit;
+  const _Drawer(this.cubit);
+
+  @override
+  Widget build(BuildContext context) {
+    return Drawer(
+      child: ListView(
+        padding: EdgeInsets.zero,
+        children: [
+          DrawerHeader(
+            decoration: BoxDecoration(color: CustomColors.primary),
+            child: Center(
+              child: Text(
+                'TeachBot',
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 24,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ),
+          ),
+          ListTile(
+            leading: const Icon(Icons.notes),
+            title: const Text('Predicción'),
+            onTap: () {
+              context.pushNamed(Routes.prediction);
+            },
+          ),
+          ListTile(
+            leading: const Icon(Icons.logout),
+            title: const Text('Cerrar sesión'),
+            onTap: () async {
+              await cubit.logout();
+              if (!context.mounted) return;
+              final biometricAvailable = await getIt<BiometricService>()
+                  .isAvailable();
+              if (!context.mounted) return;
+              context.goNamed(
+                Routes.login,
+                extra: {'showBiometric': biometricAvailable},
+              );
+            },
+          ),
+        ],
+      ),
     );
   }
 }
