@@ -1,37 +1,70 @@
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:techbot/core/di/di.dart';
 import 'package:techbot/core/widgets/appbar.dart';
+import 'package:techbot/features/document/children/flashcard/ui/cubit/cubit.dart';
+import 'package:techbot/features/document/children/flashcard/ui/page.dart';
+import 'package:techbot/features/document/children/quiz/ui/cubit/cubit.dart';
+import 'package:techbot/features/document/children/quiz/ui/page.dart';
+import 'package:techbot/features/document/children/summary/ui/cubit/cubit.dart';
+import 'package:techbot/features/document/children/summary/ui/page.dart';
+import 'package:techbot/features/document/children/view_documet/ui/cubit/cubit.dart';
+import 'package:techbot/features/document/children/view_documet/ui/page.dart';
+import 'package:techbot/features/document/ui/cubit/cubit.dart';
 
 class DocumentPage extends StatelessWidget {
-  final StatefulNavigationShell navigationShell;
   final String title;
   final int documentId;
+  final DocumentCubit cubit;
 
   const DocumentPage({
     super.key,
-    required this.navigationShell,
     required this.title,
     required this.documentId,
+    required this.cubit,
   });
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: CustomAppBar(
-        title: title,
-        onBack: () => Navigator.pop(context),
-        centerTitle: true,
+    final pages = [
+      ViewDocumentPage(
+        cubit: getIt<ViewDocumentCubit>(),
+        documentId: documentId,
       ),
-      body: navigationShell,
-      bottomNavigationBar: _StyledBottomNav(navigationShell: navigationShell),
+      SummaryPage(cubit: getIt<SummaryCubit>(), documentId: documentId),
+      FlashcardPage(cubit: getIt<FlashcardCubit>(), documentId: documentId),
+      QuizPage(cubit: getIt<QuizCubit>(), documentId: documentId),
+    ];
+
+    return BlocProvider.value(
+      value: cubit,
+      child: BlocBuilder<DocumentCubit, DocumentState>(
+        builder: (context, state) {
+          print('documentId: $documentId');
+          return Scaffold(
+            appBar: CustomAppBar(
+              title: title,
+              onBack: () => Navigator.pop(context),
+              centerTitle: true,
+            ),
+            body: IndexedStack(index: state.model.index, children: pages),
+            bottomNavigationBar: _StyledBottomNav(
+              currentIndex: state.model.index,
+              onTap: (index) =>
+                  context.read<DocumentCubit>().changeIndex(index),
+            ),
+          );
+        },
+      ),
     );
   }
 }
 
 class _StyledBottomNav extends StatelessWidget {
-  final StatefulNavigationShell navigationShell;
+  final int currentIndex;
+  final ValueChanged<int> onTap;
 
-  const _StyledBottomNav({required this.navigationShell});
+  const _StyledBottomNav({required this.currentIndex, required this.onTap});
 
   @override
   Widget build(BuildContext context) {
@@ -56,26 +89,26 @@ class _StyledBottomNav extends StatelessWidget {
             _NavItem(
               icon: Icons.description_outlined,
               label: 'Documento',
-              isActive: navigationShell.currentIndex == 0,
-              onTap: () => navigationShell.goBranch(0),
+              isActive: currentIndex == 0,
+              onTap: () => onTap(0),
             ),
             _NavItem(
               icon: Icons.fact_check_outlined,
               label: 'Resumen',
-              isActive: navigationShell.currentIndex == 1,
-              onTap: () => navigationShell.goBranch(1),
+              isActive: currentIndex == 1,
+              onTap: () => onTap(1),
             ),
             _NavItem(
               icon: Icons.style_outlined,
               label: 'Flashcards',
-              isActive: navigationShell.currentIndex == 2,
-              onTap: () => navigationShell.goBranch(2),
+              isActive: currentIndex == 2,
+              onTap: () => onTap(2),
             ),
             _NavItem(
               icon: Icons.quiz_outlined,
               label: 'Quiz',
-              isActive: navigationShell.currentIndex == 3,
-              onTap: () => navigationShell.goBranch(3),
+              isActive: currentIndex == 3,
+              onTap: () => onTap(3),
             ),
           ],
         ),
