@@ -5,6 +5,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   final String title;
   final VoidCallback? onBack;
   final VoidCallback? onLogout;
+  final void Function()? onAvatarTap;
   final bool? centerTitle;
 
   const CustomAppBar({
@@ -12,6 +13,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
     required this.title,
     this.onBack,
     this.onLogout,
+    this.onAvatarTap,
     this.centerTitle = false,
   });
 
@@ -45,7 +47,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
       title: onBack == null
           ? Row(
               children: [
-                const _Avatar(),
+                _Avatar(onAvatarTap),
                 const SizedBox(width: 12),
                 Text(
                   title,
@@ -90,23 +92,27 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
 }
 
 class _Avatar extends StatelessWidget {
-  const _Avatar();
+  final void Function()? onTap;
+  const _Avatar(this.onTap);
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      width: 42,
-      height: 42,
-      decoration: BoxDecoration(
-        shape: BoxShape.circle,
-        color: CustomColors.lavender,
-        border: Border.all(color: CustomColors.primaryLight, width: 2),
-      ),
-      child: ClipOval(
-        child: Icon(
-          Icons.person_rounded,
-          color: CustomColors.primary,
-          size: 26,
+    return InkWell(
+      onTap: onTap,
+      child: Container(
+        width: 42,
+        height: 42,
+        decoration: BoxDecoration(
+          shape: BoxShape.circle,
+          color: CustomColors.lavender,
+          border: Border.all(color: CustomColors.primaryLight, width: 2),
+        ),
+        child: ClipOval(
+          child: Icon(
+            Icons.person_rounded,
+            color: CustomColors.primary,
+            size: 26,
+          ),
         ),
       ),
     );

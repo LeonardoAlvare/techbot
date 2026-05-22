@@ -8,6 +8,8 @@ import 'package:techbot/features/document/ui/cubit/cubit.dart';
 import 'package:techbot/features/document/ui/page.dart';
 import 'package:techbot/features/home/ui/cubit/cubit.dart';
 import 'package:techbot/features/home/ui/page.dart';
+import 'package:techbot/features/prediction/ui/cubit/cubit.dart';
+import 'package:techbot/features/prediction/ui/page.dart';
 import 'package:techbot/features/splash/ui/cubit/cubit.dart';
 import 'package:techbot/features/splash/ui/page.dart';
 import 'package:techbot/features/view_subject/ui/cubit/cubit.dart';
@@ -19,6 +21,7 @@ class Routes {
   static const String register = 'register';
   static const String home = 'home';
   static const String viewSubject = 'view_subject';
+  static const String prediction = 'prediction';
   static const String document = 'document';
 
   static const String splashPath = '/$splash';
@@ -26,6 +29,7 @@ class Routes {
   static const String registerPath = '/$register';
   static const String homePath = '/$home';
   static const String viewSubjectPath = '/$viewSubject';
+  static const String predictionPath = '/$prediction';
   static const String documentPath = '/$document';
 }
 
@@ -71,6 +75,12 @@ class AppRouter {
             nameSubject: extra['nameSubject'] as String,
           );
         },
+      ),
+      GoRoute(
+        name: Routes.prediction,
+        path: Routes.predictionPath,
+        builder: (context, state) =>
+            PredictionPage(cubit: getIt<PredictionCubit>()),
       ),
       GoRoute(
         name: Routes.document,

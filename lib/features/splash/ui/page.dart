@@ -22,7 +22,21 @@ class SplashScreen extends StatelessWidget {
             context.goNamed(Routes.login, extra: {'showBiometric': false});
           }
         },
-        child: const Scaffold(body: Center(child: CircularProgressIndicator())),
+        child: const Scaffold(
+          body: Center(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Image(
+                  image: AssetImage('assets/icon/app_icon.png'),
+                  width: 200,
+                ),
+                SizedBox(height: 20),
+                CircularProgressIndicator(),
+              ],
+            ),
+          ),
+        ),
       ),
     );
   }
